@@ -1,6 +1,5 @@
 import streamlit as st
-import os, pickle, faiss
-import re, base64
+import os, pickle, faiss, re, base64
 from sentence_transformers import SentenceTransformer
 
 # ------------------------------ Load Model + Index ------------------------------
@@ -28,9 +27,10 @@ def get_answer_from_query(query):
     except Exception as e:
         return f"Error: {str(e)}"
 
-# ------------------------------ UI Styling ------------------------------
+# ------------------------------ Streamlit Page Config ------------------------------
 st.set_page_config(page_title="🌄 Tamil Nadu Tourism Chatbot", layout="wide")
 
+# ------------------------------ Background Styling ------------------------------
 def get_base64_image(image_path):
     try:
         with open(image_path, "rb") as img_file:
@@ -50,25 +50,36 @@ if bg_img:
                 font-family: 'Apple Chancery', cursive !important;
                 color: #d3d3d3;
             }}
+            header[data-testid="stHeader"] {{
+                background-color: rgba(0, 0, 0, 0) !important;
+                box-shadow: none !important;
+            }}
+            [data-testid="collapsedControl"] {{
+                color: white;
+                font-size: 22px;
+            }}
+            section[data-testid="stSidebar"] > div:first-child {{
+                background-color: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(8px);
+                border-right: 1px solid rgba(255, 255, 255, 0.2);
+            }}
             .fixed-header {{
-                position: fixed;
-                top: 0; left: 0; right: 0;
+                position: fixed; top: 0; left: 0; right: 0;
                 background-color: rgba(255, 255, 255, 0.15);
                 backdrop-filter: blur(10px);
-                padding: 1rem; text-align: center;
-                font-size: 2.2vw; font-weight: bold;
-                border-bottom: 1px solid rgba(255,255,255,0.2);
-                z-index: 1000;
+                z-index: 1000; padding: 1rem;
+                text-align: center; font-size: 2.2vw;
+                font-weight: bold; color: #d3d3d3;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             }}
             .chat-container {{
                 margin-top: 100px; margin-bottom: 120px;
-                height: 60vh; overflow-y: auto;
-                padding: 0 25px;
+                height: 60vh; overflow-y: auto; padding: 0 25px;
             }}
             .user-msg, .bot-msg {{
                 padding: 14px 20px; border-radius: 20px;
                 max-width: 80%; margin-bottom: 16px;
-                font-size: 1.05rem;
+                font-size: 1.05rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }}
             .user-msg {{ background-color: #DCE775; color: #33691E; margin-left: auto; }}
             .bot-msg {{ background-color: #9575CD; color: white; margin-right: auto; }}
@@ -90,7 +101,7 @@ if bg_img:
 # ------------------------------ Header ------------------------------
 st.markdown('<div class="fixed-header">🌄 Discover the Wonders of Tamil Nadu – Powered by AI</div>', unsafe_allow_html=True)
 
-# ------------------------------ Chat State ------------------------------
+# ------------------------------ Session State ------------------------------
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
@@ -107,14 +118,14 @@ st.markdown("""
     <div class="right-note">
         🤖 Tamil Nadu Tourism AI Assistant<br><br>
         Try asking:<br>
-        “Tell me about Meenakshi Temple”<br>
-        “பொங்கல் என்பது என்ன?”<br>
-        “What’s special in Mahabalipuram?”<br><br>
+        “Suggest silent meditation retreats in Tamil Nadu.”
+        “தமிழ்நாட்டில் உள்ள பஞ்ச பூத ஸ்தலங்கள் எவை?”
+        
         Created by: Magna, Vasundhara, Aarmitha, Keerthi
     </div>
 """, unsafe_allow_html=True)
 
-# ------------------------------ Chat Window ------------------------------
+# ------------------------------ Chat Display ------------------------------
 st.markdown('<div class="chat-container">', unsafe_allow_html=True)
 
 if not st.session_state.chat_history:
@@ -128,6 +139,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 # ------------------------------ Chat Input ------------------------------
 query = st.chat_input("Type your message here...")
+
 if query and query.strip():
     answer = get_answer_from_query(query.strip())
     st.session_state.chat_history.append({"question": query.strip(), "answer": answer})
