@@ -118,10 +118,10 @@ st.markdown("""
     <div class="right-note">
         🤖 Tamil Nadu Tourism AI Assistant<br><br>
         Try asking:<br>
-        “Suggest silent meditation retreats in Tamil Nadu.”
-        “தமிழ்நாட்டில் உள்ள பஞ்ச பூத ஸ்தலங்கள் எவை?”
-        
-        Created by: Magna, Vasundhara, Aarmitha, Keerthi
+        “Suggest silent meditation retreats in Tamil Nadu.”<br>
+        “தமிழ்நாட்டில் உள்ள பஞ்ச பூத ஸ்தலங்கள் எவை?”<br><br>
+        <strong>Note:</strong> This is a prototype version of the Tamil Nadu Tourism AI Assistant. It may produce incomplete or incorrect responses.<br><br>
+        Created by: Magna, Vasundhara, Aarmitha
     </div>
 """, unsafe_allow_html=True)
 
