@@ -1,47 +1,53 @@
-﻿# 🛍 Domain-Specific Tourism Chatbot
+# Tourism Chatbot
 
-A multilingual (English + Tamil) AI chatbot that answers tourism-related queries about Tamil Nadu using a custom Q\&A dataset, semantic search with FAISS, and a beautiful Streamlit frontend.
+A multilingual (English + Tamil) AI chatbot that answers tourism-related queries about Tamil Nadu using a custom Q&A dataset, semantic search with FAISS, and a beautiful Streamlit frontend.
 
 ---
 
 ## 🚀 Features
 
-* 🔍 Intelligent tourism Q\&A using semantic search (FAISS + Sentence Transformers)
-* 🌐 Supports English & Tamil queries automatically
-* 🧠 Merged logic (backend + semantic search) directly in Streamlit app
-* 💬 Frontend built with Streamlit
-* 🖼️ Custom background image and chat UI
-* 🗃️ Local embedding index for blazing-fast performance
+- 🔍 Intelligent tourism Q&A using semantic search (FAISS + Sentence Transformers)
+- 🌐 Supports English & Tamil queries automatically
+- 🧠 Backend powered by FastAPI + FAISS
+- 💬 Frontend built with Streamlit
+- 🖼️ Custom background image and chat UI
+- 🗃️ Local embedding index for blazing-fast performance
 
 ---
 
 ## 📁 Project Structure
 
 ```
-TOURISM-CHATBOT/
-├── app.py                      # Merged Streamlit app (frontend + backend)
-├── Thanjai.jpg                 # Background image
-├── full_tamil_nadu_tourism_qa.json   # English QA dataset
-├── tamil_tourism_qa_full.json        # Tamil QA dataset
-├── tourism_all_index.faiss     # FAISS index
-├── tourism_all_data.pkl        # Pickled embedding data
+deepshiva-tourism-chatbot/
+├── backend/
+│   ├── backend.py                # FastAPI app
+│   ├── build_index.py           # Embedding + FAISS index generator
+│   ├── full_tamil_nadu_tourism_qa.json   # English QA dataset
+│   ├── tamil_tourism_qa_full.json        # Tamil QA dataset
+│   ├── tourism_index.faiss      # FAISS index (generated)
+│   ├── tourism_data.pkl         # Raw data (generated)
+│
+├── frontend/
+│   ├── app.py                   # Streamlit frontend
+│   ├── Thanjai.jpg              # Background image
+│
 ├── requirements.txt
 ├── .gitignore
-└── README.md
+├── README.md
 ```
 
 ---
 
-## 🛠️ Installation & Run
+## 🛠️ Installation
 
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/Vasundhara2508/Chatbot.git
-cd Chatbot
+git clone https://github.com/YOUR_USERNAME/tourism-chatbot.git
+cd tourism-chatbot
 ```
 
-### 2. (Optional) Create virtual environment
+### 2. Create virtual environment (optional but recommended)
 
 ```bash
 python -m venv venv
@@ -55,13 +61,41 @@ source venv/bin/activate     # On Linux/Mac
 pip install -r requirements.txt
 ```
 
-### 4. Run the chatbot
+---
+
+## ⚙️ Backend Setup
+
+### Step 1: Generate embeddings and FAISS index
 
 ```bash
+cd backend
+python build_index.py
+```
+
+> ✅ This creates:
+> - `tourism_index.faiss`
+> - `tourism_data.pkl`
+
+### Step 2: Start the FastAPI backend
+
+```bash
+uvicorn backend:app --reload
+```
+
+You should see: `Running on http://127.0.0.1:8000`
+
+---
+
+## 💻 Frontend Setup
+
+Open a **new terminal**:
+
+```bash
+cd frontend
 streamlit run app.py
 ```
 
-> ✅ This will start the chatbot UI in your browser.
+It should open a browser tab with the chatbot UI.
 
 ---
 
@@ -69,20 +103,20 @@ streamlit run app.py
 
 The app auto-detects Tamil characters (Unicode range) and routes to the correct dataset:
 
-| Input Language | Dataset Used                        |
-| -------------- | ----------------------------------- |
-| English        | full\_tamil\_nadu\_tourism\_qa.json |
-| Tamil          | tamil\_tourism\_qa\_full.json       |
+| Input Language | Dataset Used                |
+|----------------|-----------------------------|
+| English        | full_tamil_nadu_tourism_qa.json |
+| Tamil          | tamil_tourism_qa_full.json      |
 
 ---
 
-## 🧲 Example Questions
+## 🧪 Example Questions
 
-* **English:**
-  `Tell me about the Chola architecture in Tamil Nadu.`
+- **English:**  
+  `What is the significance of the Meenakshi Temple in Madurai?`
 
-* **Tamil:**
-  `காஞ்சிபுரத்தில் உள்ள கோயில்கள் பத்தி கூறவும்`
+- **Tamil:**  
+  `மதுரையில் மீனாட்சியம்மன் கோயிலின் முக்கியத்துவம் என்ன?`
 
 ---
 
@@ -95,4 +129,3 @@ __pycache__/
 venv/
 .env
 ```
-
